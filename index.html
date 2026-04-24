@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Intrusion Detection Platform (PCA + RF + Deep Learning)</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <div class="container">
+        <h1>Intrusion Detection Website</h1>
+        <p>
+          Learn and prototype IDS workflows using classic ML (PCA + Random
+          Forest) and deep learning methods with <strong>Python</strong> and
+          <strong>Java</strong>.
+        </p>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="card">
+        <h2>Architecture Overview</h2>
+        <ol>
+          <li><strong>Data Ingestion:</strong> Capture network flow records.</li>
+          <li><strong>Preprocessing:</strong> Normalize and encode features.</li>
+          <li><strong>Feature Reduction:</strong> PCA for lower-dimensional features.</li>
+          <li><strong>Classical Model:</strong> Random Forest for interpretable baseline.</li>
+          <li><strong>Deep Learning Model:</strong> Autoencoder / LSTM for complex attack patterns.</li>
+          <li><strong>Serving Layer:</strong> Python model API consumed by Java app.</li>
+        </ol>
+      </section>
+
+      <section class="card grid-two">
+        <div>
+          <h2>Python (Model Training)</h2>
+          <ul>
+            <li>Use Scikit-learn for PCA + Random Forest.</li>
+            <li>Use TensorFlow or PyTorch for deep learning.</li>
+            <li>Expose predictions with FastAPI/Flask.</li>
+          </ul>
+        </div>
+        <div>
+          <h2>Java (Application Layer)</h2>
+          <ul>
+            <li>Build dashboard/API gateway with Spring Boot.</li>
+            <li>Integrate alerts, user auth, and reporting.</li>
+            <li>Call Python inference endpoints via REST.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Interactive Detection Demo</h2>
+        <p>
+          Pick a model family and tune synthetic traffic features to see a
+          conceptual prediction.
+        </p>
+
+        <label>
+          Model Type
+          <select id="modelType">
+            <option value="rf">PCA + Random Forest</option>
+            <option value="dl">Deep Learning (Autoencoder + LSTM)</option>
+          </select>
+        </label>
+
+        <div class="controls">
+          <label>
+            Connection Duration (seconds)
+            <input id="duration" type="range" min="0" max="120" value="20" />
+            <span id="durationValue">20</span>
+          </label>
+
+          <label>
+            Packets per Second
+            <input id="pps" type="range" min="1" max="1000" value="150" />
+            <span id="ppsValue">150</span>
+          </label>
+
+          <label>
+            Failed Login Attempts
+            <input id="failed" type="range" min="0" max="20" value="1" />
+            <span id="failedValue">1</span>
+          </label>
+
+          <label>
+            Outbound Bytes (KB)
+            <input id="bytes" type="range" min="1" max="5000" value="500" />
+            <span id="bytesValue">500</span>
+          </label>
+        </div>
+
+        <button id="predictBtn">Predict Intrusion Risk</button>
+
+        <div class="result" id="resultBox" aria-live="polite">
+          Set values and click prediction.
+        </div>
+      </section>
+
+      <section class="card grid-two">
+        <div>
+          <h2>Python Example (Training)</h2>
+          <pre><code>from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+from sklearn.ensemble import RandomForestClassifier
+
+rf_pipeline = Pipeline([
+    ("scaler", StandardScaler()),
+    ("pca", PCA(n_components=12)),
+    ("rf", RandomForestClassifier(n_estimators=300))
+])</code></pre>
+        </div>
+
+        <div>
+          <h2>Java Example (Calling API)</h2>
+          <pre><code>// Spring RestTemplate/WebClient pseudo-call
+String prediction = webClient.post()
+    .uri("http://localhost:8000/predict")
+    .bodyValue(flowPayload)
+    .retrieve()
+    .bodyToMono(String.class)
+    .block();</code></pre>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Deep Learning Example (Python)</h2>
+        <pre><code>import tensorflow as tf
+
+model = tf.keras.Sequential([
+    tf.keras.layers.Input(shape=(30,)),
+    tf.keras.layers.Dense(64, activation="relu"),
+    tf.keras.layers.Dense(32, activation="relu"),
+    tf.keras.layers.Dense(1, activation="sigmoid")
+])
+
+model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["AUC"])</code></pre>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>
+          Intrusion Detection Stack: Python (ML/DL) + Java (application and
+          integration)
+        </p>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
